@@ -4,18 +4,19 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class UserFollowController extends Controller
+class UserFavoriteController extends Controller
 {
      /**
-     * ユーザをフォローするアクション。
+     * micropostをお気に入りするアクション。
      *
      * @param  $id  相手ユーザのid
      * @return \Illuminate\Http\Response
      */
-    public function store($id)
+   public function store($micropostId)
     {
         // 認証済みユーザ（閲覧者）が、 idのユーザをフォローする
-        \Auth::user()->follow($id);
+         \Auth::user()->makefavorite($micropostId);
+        
         // 前のURLへリダイレクトさせる
         return back();
     }
@@ -26,10 +27,10 @@ class UserFollowController extends Controller
      * @param  $id  相手ユーザのid
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($micropostId)
     {
         // 認証済みユーザ（閲覧者）が、 idのユーザをアンフォローする
-        \Auth::user()->unfollow($id);
+        \Auth::user()->unfavorite($micropostId);
         // 前のURLへリダイレクトさせる
         return back();
     }

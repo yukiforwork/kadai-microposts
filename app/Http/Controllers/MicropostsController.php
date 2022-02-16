@@ -1,4 +1,4 @@
-<?php
+<?php //micropostの作成と削除
 
 namespace App\Http\Controllers;
 

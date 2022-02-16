@@ -1,4 +1,4 @@
-<?php
+<?php //ユーザー一覧の表示
 
 namespace App\Http\Controllers;
 
@@ -29,6 +29,8 @@ class UsersController extends Controller
 
         // ユーザの投稿一覧を作成日時の降順で取得
         $microposts = $user->microposts()->orderBy('created_at', 'desc')->paginate(10);
+        
+        // dd($microposts);
 
         // ユーザ詳細ビューでそれらを表示
         return view('users.show', [
@@ -37,6 +39,8 @@ class UsersController extends Controller
         ]);
     }
     
+    //フォロー関連//
+ 
       /**
      * ユーザのフォロー一覧ページを表示するアクション。
      *
@@ -84,4 +88,33 @@ class UsersController extends Controller
             'users' => $followers,
         ]);
     }
+    
+    //お気に入り関連//
+    
+    /**
+     * ユーザのお気に入り一覧ページを表示するアクション。
+     *
+     * @param  $id  ユーザのid
+     * @return \Illuminate\Http\Response
+     */
+    public function favorite($id)
+    {
+        // idの値でユーザを検索して取得
+        $user = User::findOrFail($id);
+
+        // 関係するモデルの件数をロード
+        $user->loadRelationshipCounts();
+        
+        // ユーザのお気に入りを作成日時の降順で取得
+        $microposts = $user->favorites()->orderBy('created_at', 'desc')->paginate(10);
+        
+        // dd($microposts);
+        // お気に入りビューでそれらを表示
+        return view('users.favorite', [
+            'user' => $user,
+            'microposts' => $microposts,
+        ]);
+    }
+    
+    
 }
